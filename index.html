@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecommerce website</title>
+    <link rel="shortcut icon" href="icons8-bag-100.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="output.css">
+    <style>
+        li{
+            margin: 10px;
+        }
+        body{
+          margin: 0;
+          padding: 0;
+          padding: 4px;
+            color:black;
+        }
+        @media (min-width: 1024px) {
+            .product-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+            .carousel-controls {
+                display: none;
+            }
+
+        }
+   
+        h1{
+            font-size:2.5rem;
+        }
+        img{
+            mix-blend-mode: multiply;
+        }
+        *{
+        box-sizing: border-box;
+        }
+        @keyframes moveLeftToRight {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        @keyframes moveRightToLeft {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-ltr {
+            animation: moveLeftToRight 20s linear infinite;
+        }
+        .animate-rtl {
+            animation: moveRightToLeft 20s linear infinite;
+        }
+        .nav-cart {
+            position:fixed;
+            top:0;
+            right:-100%;
+            width:50vh;
+            height:102vh;
+            background-color: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .nav-cart.open {
+            right: 0;
+          
+      
+        }
+      .click{
+     visibility: visible;
+     position: absolute;
+     top:50%;
+     left: 50%;
+     transform: translate(-50%, -50%)
+      }
+      
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .popup {
+            position: fixed;
+            bottom:20px;
+            right: 20px;
+            background-color:black;
+            color: white;
+            padding: 10px 20px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .checkout-modal {
+            display: none;
+            position:fixed;
+            z-index: 1002;
+            left:0;
+            top:0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .checkout-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            position: absolute;
+
+top: 40%;
+
+left: 50%;
+
+transform: translate(-50%, -50%);
+            font-family:"poppins" 'sans-serif';
+            max-width: 500px;
+          
+        }
+        #checkoutBtn {
+            margin-top: auto;
+            width:90%;
+            padding: 10px;
+            background-color:rgb(199, 199, 199);
+            color: rgb(22, 22, 22);
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            bottom:10px;
+          border-radius:20px;
+        }
+        #checkoutBtn:hover {
+            color:white;
+            background-color: black;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container w-[100vw] bg-white">
+      <nav class="navbar flex justify-between items-center px-4 py-2">
+      <div class="logo flex">
+          <img src="bag.svg" alt="logo"><span class="font-extrabold">BAG STORE</span>
+      </div>
+      <div class="nav-links">
+          <button id="cartBtn" class="px-4 py-2 bg-gray-200 rounded-full">
+              <i class='bx bx-cart'></i> Cart (<span id="cartCount">0</span>)
+          </button>
+      </div>
+  </nav>
+
+         <div class="page1 ml-4 mr-4">
+            <div class="page1-top h-[76vh]  m-3 p-4  bg-gray-300 rounded-lg relative">
+                <div class="title flex-col justify-center">
+                    <h1 class="font-[400] font-poppins text-black text-[4vh]">Best Leather Bag</h1>
+                <h1 class="ml-3 font-poppins text-black text-[4vh] mb-3"> Collection For You</h1>
+                </div>
+                <div class="subtitle mt-3">
+                    <p class="font-thin text-gray-500 font-open flex gap-3"><img src="arrow.svg" class="h-7 block" alt="">discover the epitome of style and craftmanship with our curated leather bag Collection</p>
+                    <button onclick="addToCart('Best Leather Bag', 450, 'leath.png')" class=" text-gray-600 px-4 py-1 mt-4 rounded-[40px] border-2 border-gray-600 hover:bg-black hover:text-white transition-all flex items-center font-open">
+                       Add to cart  <i class='bx bx-right-arrow-alt text-2xl ml-2' ></i>
+                    </button>
+                </div>
+                <div class="img flex justify-center align-baseline">
+                    <img src="leath.png" class="h-[30vh] mt-7" alt="bag ka img">
+                </div>
+                <div class="product-price absolute bottom-[40vh] right-6">
+                    <h2 class="font-semibold text-gray-600 font-open ">Price</h2>
+                    <h1 class="font-bold text-2xl">$450</h1>
+                </div>
+            </div>
+            <div class="page1-bottom">
+               <div class="title w-full flex justify-center mb-5">
+                <h1 class="font-[400] font-poppins text-3xl">We Supported By</h1>
+               </div>
+               <div class="grid grid-cols-4 gap-2">
+                <div class="flex items-center justify-center p-1 bg-gray-200 rounded-lg shadow">
+                    <img src="images/nike.jpg" alt="Nike Logo" class="h-[12vh] w-[15vh] sm:h-10 sm:w-auto">
+                </div>
+                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
+                    <img src="images/bmw.webp" alt="Etsy Logo" class="h-[12vh] w-auto">
+                </div>
+                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
+                    <img src="images/ebay.webp" alt="Reebok Logo" class="h-[12vh] w-auto">
+                </div>
+                <div class="flex items-center justify-center p-2 bg-gray-200 rounded-lg shadow">
+                    <img src="images/mapple.jpg" alt="Puma Logo" class="h-[12vh] w-auto">
+                </div>
+            </div>
+         </div>
+
+    
+
+         <!-- Products Section -->
+         <div class="products-section px-4 py-12 bg-gray-50">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-2">Our Collection</h2>
+                <p class="text-gray-600 text-center mb-8">Discover our premium selection of leather bags</p>
+                <div class="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Products will be dynamically inserted here by JavaScript -->
+                </div>
+            </div>
+         </div>
+
+         <div class="w-full bg-slate-300 rounded-lg shadow-md overflow-hidden mt-5 ">
+              <div class="relative h-24">
+                  <div class="absolute top-0 left-0 right-0 h-12 overflow-hidden">
+                      <div class="animate-ltr whitespace-nowrap py-3">
+                          <span class="inline-flex items-center">
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-brown-500 mx-2"></span>
+                          </span>
+                      </div>
+                  </div>
+                  <div class="absolute bottom-0 left-0 right-0 h-12 overflow-hidden">
+                      <div class="animate-rtl whitespace-nowrap py-3">
+                          <span class="inline-flex items-center">
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
+                              GET 20% OFF COUPON "BAG20" 
+                              <span class="inline-block w-5 h-5 bg-green-500 mx-2"></span>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+        <div class="nav-cart " id="navCart">
+         <p id="closeCartBtn" class=" px-3 py-2 bg-gray-300 text-gray-500 absolute top-4 right-4 cursor-pointer rounded-md">X</p>
+          <h2 class="text-xl font-bold mb-4">Your Cart</h2>
+          <div id="cartItems"></div>
+          <div class="mt-4">
+              <p>Total: $<span id="cartTotal">0.00</span></p>
+          </div>
+          <button id="checkoutBtn">Checkout</button>
+      </div>
+
+        <div id="checkoutModal" class="checkout-modal flex justify-center items-center ">
+            <div class="checkout-content invisible" id="checkoutContent">
+                <h2 class="text-xl font-bold mb-4">Thank you for shopping!</h2>
+                <p>Your order has been placed successfully.</p>
+            </div>
+        </div>
+    </div>
+            </div>
+    </div>
+    <div class="nav-cart">
+        <!-- Cart content will be dynamically inserted here -->
+    </div>
+
+    <div class="popup">
+        <!-- Popup notifications will be dynamically inserted here -->
+    </div>
+
+    <script src="main.js"></script>
+
+</body>
+</html>
